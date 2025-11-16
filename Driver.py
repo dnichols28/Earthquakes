@@ -1,5 +1,13 @@
 import subprocess
+import sys
+from pathlib import Path
+
+student_folder = Path(__file__).parent / "Student files"
+sys.path.insert(0, str(student_folder))
+
 from Student import Student
+from load_student import load_student
+from student_driver import student_driver
 
 def main_menu():
     while True:
@@ -12,47 +20,40 @@ def main_menu():
 
         if choice == "1":
             run_java_signup()
-
         elif choice == "2":
             login()
-
         elif choice == "3":
             print("Goodbye!")
             break
         else:
             print("Invalid choice. Try again.")
 
-
 def run_java_signup():
-    # Runs: java SignUp
     subprocess.run(["java", "SignUp"])
 
-
 def login():
-    print("\n=== LOGIN ===")
-    name = input("Enter your name: ")
-    user_id = input("Enter your ID: ")
-
+    name = input("Enter your name: ").strip()
+    user_id = input("Enter your ID: ").strip()
     prefix = user_id[:3]
 
     if prefix == "900":
-        #This is where the student files would go 
-        #Make sure to read Trello
-        print(f"Welcome Student!")
+        student = load_student(user_id=user_id)
+        if student is None or student.full_name.lower() != name.lower():
+            print("Name or ID incorrect or student not found.")
+            return
+        for _ in range(50):
+            print("\n")
+        print(f"Welcome {student.full_name}!")
+        student_driver(student)
 
     elif prefix == "700":
-        #This is where the Professor files would go 
-        #Make sure to read Trello
-        print(f"Welcome Professor!")
+        print("Welcome Professor!")
 
     elif prefix == "800":
-        #This is where the Admin files would go 
-        #Make sure to read Trello
-        print(f"Welcome Admin!")
+        print("Welcome Admin!")
 
     else:
         print("Invalid ID prefix.")
-
 
 if __name__ == "__main__":
     main_menu()
