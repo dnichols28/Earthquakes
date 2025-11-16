@@ -1,6 +1,11 @@
 from Student import Student
+from pathlib import Path
 
-def load_student(user_id, database="../Database/Accounts.txt"):
+def load_student(user_id, database=None):
+    if database is None:
+        base_folder = Path(__file__).parent.parent  # root folder
+        database = base_folder / "Database" / "Accounts.txt"
+
     with open(database, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
