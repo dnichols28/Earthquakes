@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+root_folder = Path(__file__).parent.parent
+sys.path.insert(0, str(root_folder))
+
+from Functions import clear_screen
+
 def student_driver(student):
     while True:
         print("\n===== STUDENT MENU =====")
@@ -9,12 +17,15 @@ def student_driver(student):
         choice = input("Enter choice: ")
 
         if choice == "1":
+            clear_screen()
             student.display_info()
         elif choice == "2":
+            clear_screen()
             new_major = input("Enter new major: ")
             student.change_major(new_major)
             print("Major updated!")
         elif choice == "3":
+            clear_screen()
             print("Fiscal Clearance:", student.return_clearance_status())
         elif choice == "4":
             break
