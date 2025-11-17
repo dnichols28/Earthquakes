@@ -45,4 +45,15 @@ class Course:
     def change_course_name(self, new_name):
         self.course_name = new_name
     
+    #Scheduling Functions
+    def add_course_on_student_schedule(self, schedule_list, student_name, course_object):
+        if student_name in self.class_list:
+            schedule_list.append(course_object)
+        else:
+            print(f"Student {student_name} is not enrolled in this course.")
     
+    def remove_course_from_student_schedule(self, student_name):
+        if student_name in self.class_list:
+            schedule_list.append(course_object)
+        else:
+            print(f"Student {student_name} is not enrolled in this course.")
