@@ -24,7 +24,7 @@ class Course:
             print(f"- {student}")
     
     def access_course(self, CRN, crns_dict):
-        if CRN in crns_dict:
+        if CRN in crns_dict.keys():
             return crns_dict[CRN]
         else:
             return "Not a valid CRN."
@@ -35,8 +35,14 @@ class Course:
     def access_crns(self):
         for crn in crns_dict.keys():
             print(crn)
-    
-    def change_course_name(self, old_name, new_name):
+            
+    def access_course_crn(self, find_course_name):
+        for crn, course in crns_dict.items():
+            if course.course_name == find_course_name:
+                return crn
+        return "Course name not found, can not retrieve CRN."
+
+    def change_course_name(self, new_name):
         self.course_name = new_name
     
     
