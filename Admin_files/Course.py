@@ -8,7 +8,7 @@ class Course:
         if CRN not in crns_dict:
             crns_dict[CRN] = Course(course_name, time, class_list)
         else:
-            while CRN in crns_dict:
+            while CRN in crns_dict.keys():
                 CRN = random.randint(10000, 99999)
             crns_dict[CRN] = Course(course_name, time, class_list)
         self.CRN = CRN
@@ -29,5 +29,14 @@ class Course:
         else:
             return "Not a valid CRN."
     
-        z
+    def change_time(self, new_time):
+        self.time = new_time
+    
+    def access_crns(self):
+        for crn in crns_dict.keys():
+            print(crn)
+    
+    def change_course_name(self, old_name, new_name):
+        self.course_name = new_name
+    
     
