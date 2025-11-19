@@ -10,7 +10,7 @@ def admin_input_course():
     class_list = []
     return Course(course_name, time, class_list)
 
-def create_student_schedule(student_name):
+def create_student_schedule(student_900):
     schedule_list = []
-    student_schedule_dict ={student_name: schedule_list}
+    student_schedule_dict ={student_900: schedule_list}
     return student_schedule_dict
