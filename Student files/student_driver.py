@@ -19,6 +19,7 @@ def student_driver(student):
 
         if choice == "1":
             clear_screen()
+            print(f"Displaying {student.full_name} Information")
             student.display_info()
         elif choice == "2":
             clear_screen()
