@@ -22,6 +22,19 @@ class Student:
         print(f"Name: {self.full_name}")
         print(f"Classification: {self.classification}")
         print(f"Fiscally Cleared: {'Yes' if self.fiscal_clearance else 'No'}")
+        # ASCII art printed for display_info
+        print("""
+    ___
+          /___\\
+         |     |
+         |     |
+         |     |
+         |     |
+         \\     /
+          \\___/
+           \\ /
+        V
+    """)
         print(f"Major: {self.major}")
 
     def display_schedule(self):
