@@ -6,6 +6,8 @@ from pathlib import Path
 
 class Course: 
     crns_list = []
+    # registry mapping CRN (string) -> Course instance
+    courses_by_crn = {}
     def __init__(self, course_name, time, class_list):
         self.course_name = course_name
         CRN = random.randint(10000, 99999)
@@ -17,6 +19,8 @@ class Course:
                 CRN = random.randint(10000, 99999)
             Course.crns_list.append(CRN)
             self.CRN = CRN
+        # register this instance for class-level operations
+        Course.courses_by_crn[str(self.CRN)] = self
         self.time = time
         self.class_list = class_list
     
@@ -43,6 +47,22 @@ class Course:
         print("Class List:")
         for student in self.class_list:
             print(f"- {student}")
+
+    def display_crn_desc(self, csv_path):
+        crns = []
+
+        with open(csv_path, mode="r", newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+
+            for row in reader:
+                if "crn" in row and row["crn"].isdigit():
+                    crns.append(int(row["crn"]))
+
+        crns.sort(reverse=True)
+
+        for i in range(1, len(crns) + 1):
+            print(f"{i}. {crns[i -1]}")
+
     
     def change_time(self, new_time):
         self.time = new_time
