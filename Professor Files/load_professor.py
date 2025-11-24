@@ -1,5 +1,6 @@
 import sys 
 from pathlib import Path
+from Professor import Professor
 
 professor_folder = Path(__file__).parent
 sys.path.insert(0, str(professor_folder))
@@ -19,13 +20,18 @@ def load_professor(user_id, database=None):
             parts = [p.strip().strip('"') for p in line.split(",")]
 
             if parts[0] == "PROFESSOR" and parts[1] == user_id:
-                # parts[3] contains assigned courses separated by ';'
-                assigned_courses = parts[3].split(';') if len(parts) > 3 and parts[3] else []
+                # Format: PROFESSOR,professor_id,full_name,department,courses
+                # courses are separated by ';'
+                department = parts[3] if len(parts) > 3 else ""
+                assigned_courses = []
+                if len(parts) > 4 and parts[4]:
+                    assigned_courses = parts[4].split(';')
+                
                 return Professor(
                     professor_id=parts[1],
                     full_name=parts[2],
-                    department=parts[3] if len(parts) > 3 else "",
-                    assigned_courses=assigned_courses if len(parts) > 4 else []
+                    department=department,
+                    assigned_courses=assigned_courses
                 )
 
     return None
