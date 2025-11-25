@@ -21,7 +21,7 @@ class Student:
         print(f"Student Number: {self.student_num}")
         print(f"Name: {self.full_name}")
         print(f"Classification: {self.classification}")
-        print(f"Fiscally Cleared: {'Yes' if self.fiscal_clearance else 'No'}")
+        print(f"FISCALLY CLEARED: {'Yes' if self.fiscal_clearance else 'No'}")
         # ASCII art printed for display_info
         print("""
     ___
