@@ -8,7 +8,7 @@ sys.path.insert(0, str(student_folder))
 from load_student import load_student
 
 def clear_screen():
-    for _ in range(50):
+    for _ in range(3):
         print("\n")
 
 def admin_input_course():
@@ -80,3 +80,158 @@ def update_student_in_database(student):
                     f.write(line)
             else:
                 f.write(line)
+
+
+def create_schedule(student_900):
+    import os
+    
+    base_folder = Path(__file__).parent
+    courses_folder = base_folder / "Database" / "courses"
+    
+    available_courses = []
+    
+    # Read all course files from the courses folder
+    if courses_folder.exists():
+        for course_file in os.listdir(courses_folder):
+            if course_file.endswith('.txt'):
+                course_path = courses_folder / course_file
+                
+                # Read course details from file
+                with open(course_path, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                    
+                    crn = None
+                    course_name = None
+                    time = "TBA"
+                    credits = 3
+                    students = []
+                    
+                    # Parse the file
+                    reading_students = False
+                    for line in lines:
+                        line = line.strip()
+                        
+                        if line.startswith("crn:"):
+                            crn = line.split(":", 1)[1].strip()
+                        elif line.startswith("course_name:"):
+                            course_name = line.split(":", 1)[1].strip()
+                        elif line.startswith("time:"):
+                            time = line.split(":", 1)[1].strip()
+                        elif line.startswith("credits:"):
+                            credits_str = line.split(":", 1)[1].strip()
+                            credits = int(credits_str) if credits_str.isdigit() else 3
+                        elif line.startswith("students:"):
+                            reading_students = True
+                        elif reading_students and line and line != "professor: none":
+                            students.append(line)
+                    
+                    # Create Course object if we have valid data
+                    if crn and course_name:
+                        course = Course(course_name, time, credits, students)
+                        course.CRN = int(crn)
+                        available_courses.append(course)
+    
+    if not available_courses:
+        print("No courses available in the database.")
+        return []
+    
+    # AUTOMATICALLY create initial schedule
+    print(f"\n=== Auto-generating Schedule for Student {student_900} ===")
+    selected_courses = auto_select_courses(available_courses, 19)
+    
+    # Add student to all selected courses
+    for course in selected_courses:
+        if student_900 not in course.class_list:
+            course.class_list.append(student_900)
+    
+    # Display the auto-generated schedule
+    print("\n===== AUTO-GENERATED SCHEDULE =====")
+    total_credits = sum(c.credits for c in selected_courses)
+    for course in selected_courses:
+        print(f"- {course.course_name} ({course.credits} credits) - {course.time} [CRN: {course.CRN}]")
+    print(f"\nTotal Credits: {total_credits}/19")
+    
+    # Ask if they want to edit
+    edit_choice = input("\nWould you like to edit this schedule? (y/n): ").strip().lower()
+    
+    if edit_choice != 'y':
+        print("\nSchedule accepted!")
+        return selected_courses
+    
+    # Now allow editing
+    print("\n=== Edit Schedule ===")
+    print("\nAvailable courses:")
+    for i, course in enumerate(available_courses, 1):
+        in_schedule = "✓" if course in selected_courses else " "
+        print(f"{in_schedule} {i}. {course.course_name} ({course.credits} credits) - {course.time} [CRN: {course.CRN}]")
+    
+    while True:
+        print(f"\nCurrent Credits: {total_credits}/19")
+        choice = input("\nAdd course number, 'remove' + number to remove, or 'done': ").strip().lower()
+        
+        if choice == 'done':
+            break
+        
+        if choice.startswith('remove '):
+            remove_num = choice.split()[1]
+            if remove_num.isdigit():
+                course_index = int(remove_num) - 1
+                if 0 <= course_index < len(available_courses):
+                    course_to_remove = available_courses[course_index]
+                    if course_to_remove in selected_courses:
+                        selected_courses.remove(course_to_remove)
+                        total_credits -= course_to_remove.credits
+                        if student_900 in course_to_remove.class_list:
+                            course_to_remove.class_list.remove(student_900)
+                        print(f"✓ Removed: {course_to_remove.course_name}")
+                    else:
+                        print("That course is not in the schedule.")
+                else:
+                    print("Invalid course number.")
+        
+        elif choice.isdigit():
+            course_index = int(choice) - 1
+            if 0 <= course_index < len(available_courses):
+                selected_course = available_courses[course_index]
+                
+                if selected_course in selected_courses:
+                    print("That course is already in the schedule.")
+                elif total_credits + selected_course.credits <= 19:
+                    selected_courses.append(selected_course)
+                    total_credits += selected_course.credits
+                    if student_900 not in selected_course.class_list:
+                        selected_course.class_list.append(student_900)
+                    print(f"✓ Added: {selected_course.course_name} ({selected_course.credits} credits)")
+                else:
+                    print(f"✗ Cannot add {selected_course.course_name} - would exceed 19 credits")
+            else:
+                print("Invalid course number.")
+        else:
+            print("Invalid input.")
+    
+    # Display final schedule
+    print("\n===== FINAL SCHEDULE =====")
+    total_credits = 0
+    for course in selected_courses:
+        print(f"- {course.course_name} ({course.credits} credits) - {course.time} [CRN: {course.CRN}]")
+        total_credits += course.credits
+    print(f"\nTotal Credits: {total_credits}")
+    
+    return selected_courses
+
+def auto_select_courses(available_courses, max_credits=19):
+    
+    sorted_courses = sorted(available_courses, key=lambda c: c.credits, reverse=True)
+    
+    selected = []
+    total_credits = 0
+    
+    for course in sorted_courses:
+        if total_credits + course.credits <= max_credits:
+            selected.append(course)
+            total_credits += course.credits
+            
+        if total_credits == max_credits:
+            break
+    
+    return selected

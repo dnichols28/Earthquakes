@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from Admin_files.Course import Course
+from Course import Course
 
 root_folder = Path(__file__).parent.parent
 sys.path.insert(0, str(root_folder))
@@ -8,6 +8,7 @@ sys.path.insert(0, str(root_folder))
 from Functions import clear_screen
 from Functions import admin_input_course
 from Functions import create_student_schedule
+from Functions import create_schedule
 from Functions import manage_fiscal_clearance
 
 def admin_driver(admin):
@@ -56,14 +57,14 @@ def admin_driver(admin):
             clear_screen()
             print("Create Student Schedule")
             student_900 = input("Enter student 900 number: ")
-            new_schedule = create_student_schedule(student_900)
-            all_students_schedules.append(new_schedule)
+            new_schedule = create_schedule(student_900)
+            all_students_schedules.append({student_900: new_schedule})
             create_new = input("Do you want to create another student schedule? (y/n): ").lower()
             
             while create_new != 'n':
                 student_900 = input("Enter student 900 number: ")
-                new_schedule = create_student_schedule(student_900)
-                all_students_schedules.append(new_schedule)
+                new_schedule = create_schedule(student_900)
+                all_students_schedules.append({student_900: new_schedule})
                 create_new = input("Do you want to create another student schedule? (y/n): ").lower()
 
         
