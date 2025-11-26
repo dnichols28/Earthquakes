@@ -66,7 +66,49 @@ class Course:
         for i in range(1, len(crns) + 1):
             print(f"{i}. {crns[i -1]}")
 
-    
+    def assign_professor(self, crn, professor_name):
+
+        csv_path = Path(__file__).parent.parent / "Database" / "Courses.csv"
+        os.makedirs(csv_path.parent, exist_ok=True)
+
+        rows = []
+        fieldnames = ["crn", "course_name", "time", "class_list", "professor"]
+        crn_str = str(crn)
+        updated_row = None
+
+        # Read existing rows if file exists
+        if csv_path.exists():
+            with open(csv_path, mode="r", newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                # load rows
+                for r in reader:
+                    # ensure professor key exists for every row
+                    if "professor" not in r:
+                        r["professor"] = ""
+                    rows.append(r)
+
+        # Update matching CRN row if present
+        for r in rows:
+            if r.get("crn") == crn_str:
+                r["professor"] = professor_name
+                updated_row = r
+                break
+
+        # If not found, append a new row with professor populated
+        if updated_row is None:
+            print("CRN not found in database. Please try creating a course with this CRN before assigning a professor to it.")
+            return None
+        
+        # Write everything back with the professor column ensured
+        with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for r in rows:
+                writer.writerow({k: r.get(k, "") for k in fieldnames})
+        
+        return updated_row
+
+
     def change_time(self, new_time):
         self.time = new_time
     
