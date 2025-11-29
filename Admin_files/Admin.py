@@ -14,6 +14,10 @@ class Admin:
                 s = s.replace('"', '""')
                 return f'"{s}"'
             return s
+    
+    def create_transcript(self, student_name, courses_list, year, semester, credits):
+        
+        
 
         parts = ["ADMIN", self.admin_num, self.full_name]
         record = ",".join(escape(p) for p in parts)
