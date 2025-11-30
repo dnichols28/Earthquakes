@@ -1,3 +1,7 @@
+from pathlib import Path
+import csv
+
+
 class Student:
     def __init__(self,student_num, full_name, classification, major, fiscal_clearance):
         self.student_num = student_num
