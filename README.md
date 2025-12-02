@@ -142,3 +142,35 @@ Earthquakes is a command-line university management system that simulates how st
 Users log in with an ID (900 for students, 700 for professors, 800 for admins). Based on the user type, the program loads their profile, displays the appropriate portal, and allows them to perform actions such as viewing schedules, managing classes, creating courses, and generating transcripts.
 
 All system data is stored as simple text files in the Database/ directory, and the entire application is launched from Driver.py.
+
+
+System Outline:
+
+The system is divided into three major portals, each with its own drivers, loaders, classes, and file operations:
+
+Student Portal (900…)
+View name, major, fiscal status
+Change major
+View schedule (current & past)
+Load student data from Accounts.txt
+Read/write course files from Database/courses/
+
+Professor Portal (700…)
+View assigned classes
+View enrolled students
+Drop students
+Change class meeting times
+Load professor data from Accounts.txt
+
+Admin Portal (800…)
+Create courses (auto-generate CRN)
+Assign professors
+Add/remove students
+Generate transcripts (writes to Transcripts.csv)
+Manage course files under Database/courses/
+Shared Utilities
+
+
+Functions.py for shared logic (clear screen, fiscal check, schedule utilities)
+Driver.py for login validation & routing
+Data stored in text files for simplicity
