@@ -123,3 +123,14 @@ Earthquakes/                              ← project root (current folder)
 │       ├── BIO 110.txt
 │       └── … (20+ more course files)
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+----------------------------------------------------------------
+SDD:
+
+Project Description:
+
+Earthquakes is a command-line university management system that simulates how students, professors, and administrators interact with academic data.
+Users log in with an ID (900 for students, 700 for professors, 800 for admins). Based on the user type, the program loads their profile, displays the appropriate portal, and allows them to perform actions such as viewing schedules, managing classes, creating courses, and generating transcripts.
+
+All system data is stored as simple text files in the Database/ directory, and the entire application is launched from Driver.py.
+
