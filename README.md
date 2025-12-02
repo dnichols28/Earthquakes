@@ -227,3 +227,5 @@ Class: Course
 + add_student(student_id)
 + drop_student(student_id)
 -------------------------------
+
+User Case Stories are found in trello-board-export
