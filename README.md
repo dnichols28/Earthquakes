@@ -174,3 +174,56 @@ Shared Utilities
 Functions.py for shared logic (clear screen, fiscal check, schedule utilities)
 Driver.py for login validation & routing
 Data stored in text files for simplicity
+
+UML Class Diagram:
+-------------------------------
+Class: Student
+-------------------------------
+- id : int
+- name : str
+- major : str
+- fiscal_cleared : bool
+- schedule : list
+-------------------------------
++ view_schedule()
++ change_major(new_major)
++ check_fiscal_clearance()
+-------------------------------
+
+-------------------------------
+Class: Professor
+-------------------------------
+- id : int
+- name : str
+- assigned_courses : list
+-------------------------------
++ view_courses()
++ drop_student(course, student_id)
++ change_meeting_time(course, new_time)
+-------------------------------
+
+-------------------------------
+Class: Admin
+-------------------------------
+- id : int
+- name : str
+-------------------------------
++ create_course(name, time)
++ assign_professor(course, professor_id)
++ manage_student(course, student_id)
++ generate_transcript(student_id)
+-------------------------------
+
+-------------------------------
+Class: Course
+-------------------------------
+- crn : int
+- name : str
+- time : str
+- professor_id : int
+- enrolled_students : list
+-------------------------------
++ save_to_file()
++ add_student(student_id)
++ drop_student(student_id)
+-------------------------------
