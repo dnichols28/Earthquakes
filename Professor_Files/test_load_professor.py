@@ -6,11 +6,11 @@ import tempfile
 
 # Add Professor Files directory to path
 root_folder = Path(__file__).parent
-professor_files_folder = root_folder / "Professor Files"
+professor_files_folder = root_folder / "Professor_Files"
 sys.path.insert(0, str(professor_files_folder))
 
-from Professor import Professor
-from load_professor import load_professor
+from Professor_Files import Professor
+from Professor_Files.load_professor import load_professor
 
 
 class TestLoadProfessor(unittest.TestCase):

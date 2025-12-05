@@ -6,7 +6,7 @@ from io import StringIO
 
 # Add necessary directories to path
 root_folder = Path(__file__).parent
-professor_files_folder = root_folder / "Professor Files"
+professor_files_folder = root_folder / "Professor_Files"
 admin_folder = root_folder / "Admin_files"
 sys.path.insert(0, str(professor_files_folder))
 sys.path.insert(0, str(admin_folder))
