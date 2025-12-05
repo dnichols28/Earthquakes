@@ -12,9 +12,9 @@ sys.path.insert(0, str(professor_files_folder))
 sys.path.insert(0, str(admin_folder))
 sys.path.insert(0, str(root_folder))
 
-from Professor import Professor
+from Professor_Files.Professor import Professor
 from Admin_files.Course import Course
-from professor_driver import professor_driver
+from Professor_Files.professor_driver import professor_driver
 
 
 class TestProfessorDriver(unittest.TestCase):
